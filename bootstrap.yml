@@ -1,0 +1,46 @@
+---
+
+- hosts: all
+  become: true
+  pre_tasks:
+
+  - name: install updates (CentOS)
+    tags: always
+    dnf:
+      update_only: yes
+      update_cache: yes
+    when: ansible_distribution == "CentOS"
+
+  - name: install updates (Ubuntu)
+    tags: always
+    apt:
+      upgrade: dist
+      update_cache: yes
+    when: ansible_distribution == "Ubuntu"
+
+- hosts: all
+  become: true
+  tasks:
+
+  - name: create wendy user
+    tags: always
+    user:
+      name: wendy
+      groups: root
+
+  - name: add ssh key for wendy
+    tags: always
+    authorized_key:
+      user: wendy
+      key: "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIPnilipwrtw0p+vvpr9dl/nBydqXWgy2j9EKIto3TMe+ ansible"
+
+  - name: add sudoers file for wendy
+    tags: always
+    copy:
+      src: sudoers_wendy
+      dest: /etc/sudoers.d/wendy
+      owner: root
+      group: root
+      mode: 0440
+
+
