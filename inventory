@@ -1,7 +1,8 @@
 [web_servers]
 192.168.10.7
 
-[db_servers]
+[workstations]
 192.168.10.8 
 
-
+[db_servers]
+192.168.10.8
