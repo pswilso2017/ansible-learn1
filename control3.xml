@@ -1,0 +1,120 @@
+<domain type='kvm' id='3' xmlns:qemu='http://libvirt.org/schemas/domain/qemu/1.0'>
+  <name>control-3</name>
+  <uuid>c07f05de-6ba3-4ece-aad2-f76213213260</uuid>
+  <memory unit='KiB'>16777216</memory>
+  <currentMemory unit='KiB'>16777216</currentMemory>
+  <vcpu placement='static'>4</vcpu>
+  <resource>
+    <partition>/machine</partition>
+  </resource>
+  <os>
+    <type arch='s390x' machine='s390-ccw-virtio-rhel8.2.0'>hvm</type>
+    <kernel>/var/lib/libvirt/images/rhcos-kernel</kernel>
+    <initrd>/var/lib/libvirt/images/rhcos-initramfs.img</initrd>
+    <cmdline>rd.neednet=1 coreos.inst.install_dev=/dev/vda coreos.live.rootfs_url=http://9.60.87.139:8080/bin/rhcos-rootfs.img coreos.inst.ignition_url=http://9.60.87.139:8080/ignition/master.ign ip=9.60.87.136::9.60.86.1:255.255.254.0:::none nameserver=9.60.87.139</cmdline>
+    <boot dev='hd'/>
+  </os>
+  <cpu mode='custom' match='exact' check='partial'>
+    <model fallback='forbid'>z14ZR1-base</model>
+    <feature policy='require' name='aen'/>
+    <feature policy='require' name='cmmnt'/>
+    <feature policy='require' name='aefsi'/>
+    <feature policy='require' name='diag318'/>
+    <feature policy='require' name='mepoch'/>
+    <feature policy='require' name='msa8'/>
+    <feature policy='require' name='msa7'/>
+    <feature policy='require' name='msa6'/>
+    <feature policy='require' name='msa5'/>
+    <feature policy='require' name='msa4'/>
+    <feature policy='require' name='msa3'/>
+    <feature policy='require' name='msa2'/>
+    <feature policy='require' name='msa1'/>
+    <feature policy='require' name='sthyi'/>
+    <feature policy='require' name='edat'/>
+    <feature policy='require' name='ri'/>
+    <feature policy='require' name='edat2'/>
+    <feature policy='require' name='etoken'/>
+    <feature policy='require' name='vx'/>
+    <feature policy='require' name='ipter'/>
+    <feature policy='require' name='mepochptff'/>
+    <feature policy='require' name='ap'/>
+    <feature policy='require' name='vxeh'/>
+    <feature policy='require' name='vxpd'/>
+    <feature policy='require' name='esop'/>
+    <feature policy='require' name='apqi'/>
+    <feature policy='require' name='apft'/>
+    <feature policy='require' name='els'/>
+    <feature policy='require' name='iep'/>
+    <feature policy='require' name='apqci'/>
+    <feature policy='require' name='cte'/>
+    <feature policy='require' name='ais'/>
+    <feature policy='require' name='bpb'/>
+    <feature policy='require' name='gs'/>
+    <feature policy='require' name='ppa15'/>
+    <feature policy='require' name='zpci'/>
+    <feature policy='require' name='sea_esop2'/>
+    <feature policy='require' name='te'/>
+    <feature policy='require' name='cmm'/>
+  </cpu>
+  <clock offset='utc'/>
+  <on_poweroff>destroy</on_poweroff>
+  <on_reboot>restart</on_reboot>
+  <on_crash>destroy</on_crash>
+  <devices>
+    <emulator>/usr/libexec/qemu-kvm</emulator>
+    <disk type='file' device='disk'>
+      <driver name='qemu' type='qcow2'/>
+      <source file='/var/lib/libvirt/images/control-3.qcow2' index='1'/>
+      <backingStore type='file' index='2'>
+        <format type='qcow2'/>
+        <source file='/var/lib/libvirt/images/rhcos-qemu.s390x.qcow2'/>
+        <backingStore/>
+      </backingStore>
+      <target dev='vda' bus='virtio'/>
+      <alias name='virtio-disk0'/>
+      <address type='ccw' cssid='0xfe' ssid='0x0' devno='0x0000'/>
+    </disk>
+    <controller type='pci' index='0' model='pci-root'>
+      <alias name='pci.0'/>
+    </controller>
+    <controller type='virtio-serial' index='0'>
+      <alias name='virtio-serial0'/>
+      <address type='ccw' cssid='0xfe' ssid='0x0' devno='0x0002'/>
+    </controller>
+    <interface type='direct'>
+      <mac address='52:54:00:88:92:6f'/>
+      <source network='macvtap-net' portid='bad4ae69-4836-4503-8e44-bed329445a7d' dev='enc1' mode='bridge'/>
+      <target dev='macvtap2'/>
+      <model type='virtio'/>
+      <alias name='net0'/>
+      <address type='ccw' cssid='0xfe' ssid='0x0' devno='0x0001'/>
+    </interface>
+    <console type='pty' tty='/dev/pts/2'>
+      <source path='/dev/pts/2'/>
+      <target type='sclp' port='0'/>
+      <alias name='console0'/>
+    </console>
+    <channel type='unix'>
+      <source mode='bind' path='/var/lib/libvirt/qemu/channel/target/domain-3-control-3/org.qemu.guest_agent.0'/>
+      <target type='virtio' name='org.qemu.guest_agent.0' state='disconnected'/>
+      <alias name='channel0'/>
+      <address type='virtio-serial' controller='0' bus='0' port='1'/>
+    </channel>
+    <memballoon model='virtio'>
+      <alias name='balloon0'/>
+      <address type='ccw' cssid='0xfe' ssid='0x0' devno='0x0003'/>
+    </memballoon>
+    <panic model='s390'/>
+  </devices>
+  <seclabel type='dynamic' model='dac' relabel='yes'>
+    <label>+107:+107</label>
+    <imagelabel>+107:+107</imagelabel>
+  </seclabel>
+  <qemu:commandline>
+    <qemu:arg value='-drive'/>
+    <qemu:arg value='if=none,id=ignition,format=raw,file=/var/www/html/ignition/master.ign,readonly=on'/>
+    <qemu:arg value='-device'/>
+    <qemu:arg value='virtio-blk,serial=ignition,drive=ignition'/>
+  </qemu:commandline>
+</domain>
+
