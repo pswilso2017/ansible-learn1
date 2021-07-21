@@ -10,7 +10,7 @@
 
   - name: Unzip OCP Client
     ansible.builtin.unarchive:
-      src: /ocpinst/openshift-client-linux.tar.gz
+      src: https://mirror.openshift.com/pub/openshift-v4/s390x/clients/ocp/stable/openshift-client-linux.tar.gz
       dest: /ocpinst/
 
   - name: Download OCP Installer
