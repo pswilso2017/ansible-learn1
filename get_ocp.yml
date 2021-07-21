@@ -1,4 +1,4 @@
-- hosts: bastion_server
+- hosts: kvm_host
   become: true
   tasks:
 
