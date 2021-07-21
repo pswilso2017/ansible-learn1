@@ -2,11 +2,11 @@
   become: true
   tasks:
 
-  - name: Download OCP Client
-    get_url:
-      url: https://mirror.openshift.com/pub/openshift-v4/s390x/clients/ocp/stable/openshift-client-linux.tar.gz
-      dest: /ocpinst/
-      mode: '0755'
+#  - name: Download OCP Client
+#    get_url:
+#      url: https://mirror.openshift.com/pub/openshift-v4/s390x/clients/ocp/stable/openshift-client-linux.tar.gz
+#      dest: /ocpinst/
+#      mode: '0755'
 
   - name: Unzip OCP Client
     ansible.builtin.unarchive:
