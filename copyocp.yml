@@ -2,22 +2,6 @@
   become: true
   tasks:
 
-  - name: create OCP download landing directory
-    file: 
-      path: /ocpinst/
-      state: directory
-
-  - name: Unzip OCP Client
-    ansible.builtin.unarchive:
-      src: https://mirror.openshift.com/pub/openshift-v4/s390x/clients/ocp/stable/openshift-client-linux.tar.gz
-      dest: /ocpinst/
-      remote_src: yes
-
-  - name: Unzip OCP Installer
-    ansible.builtin.unarchive:
-      src: https://mirror.openshift.com/pub/openshift-v4/s390x/clients/ocp/stable/openshift-install-linux.tar.gz
-      dest: /ocpinst/
-      remote_src: yes
 
   - name: Copy kubectl file 
     ansible.builtin.copy:
