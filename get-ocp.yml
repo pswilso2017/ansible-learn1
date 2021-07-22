@@ -2,7 +2,7 @@
   become: true
   tasks:
 
-  - name: create OCP landing directory
+  - name: create OCP download landing directory
     file: 
       path: /ocpinst/
       state: directory
@@ -15,5 +15,40 @@
 
   - name: Unzip OCP Installer
     ansible.builtin.unarchive:
-      src: /ocpinst/openshift-client-linux.tar.gz
+      src: https://mirror.openshift.com/pub/openshift-v4/s390x/clients/ocp/stable/openshift-install-linux.tar.gz
       dest: /ocpinst/
+      remote_src: yes
+
+  - name: Change file permissions for kubectl
+    ansible.builtin.file:
+      path: /ocpinst/kubectl
+      mode: '0755'
+
+  - name: Change file permissions for oc
+    ansible.builtin.file:
+      path: /ocpinst/oc
+      mode: '0755'
+
+  - name: Change file permissions for openshift-install
+    ansible.builtin.file:
+      path: /ocpinst/openshift-install
+      mode: '0755'
+
+  - name: Copy kubectl file 
+    ansible.builtin.copy:
+      src: /ocpinst/kubectl
+      dest: /usr/local/bin/kubectl
+      mode: '0755'
+
+  - name: Copy oc file
+    ansible.builtin.copy:
+      src: /ocpinst/oc
+      dest: /usr/local/bin/oc
+      mode: '0755'
+
+  - name: Copy openshift-install file
+    ansible.builtin.copy:
+      src: /ocpinst/openshift-install
+      dest: /usr/local/bin/openshift-install
+      mode: '0755'
+      
