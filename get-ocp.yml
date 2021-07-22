@@ -2,22 +2,16 @@
   become: true
   tasks:
 
-#  - name: Download OCP Client
-#    get_url:
-#      url: https://mirror.openshift.com/pub/openshift-v4/s390x/clients/ocp/stable/openshift-client-linux.tar.gz
-#      dest: /ocpinst/
-#      mode: '0755'
+  - name: create OCP landing directory
+    file: 
+      path: /ocpinst/
+      state: directory
 
   - name: Unzip OCP Client
     ansible.builtin.unarchive:
       src: https://mirror.openshift.com/pub/openshift-v4/s390x/clients/ocp/stable/openshift-client-linux.tar.gz
       dest: /ocpinst/
-
-  - name: Download OCP Installer
-    get_url:
-      url: https://mirror.openshift.com/pub/openshift-v4/s390x/clients/ocp/stable/openshift-install-linux.tar.gz
-      dest: /ocpinst/
-      mode: '0755'
+      remote_src: yes
 
   - name: Unzip OCP Installer
     ansible.builtin.unarchive:
