@@ -46,3 +46,10 @@
       group: root
       mode: '0755'
       
+  - name: Create Manifests
+    ansible.builtin.command: 
+      cmd: /ocpinst/openshift-install create manifests --dir=/ocpinst/
+      args:
+        chdir: /ocpinst/
+        
+  
